@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     // printf("block_size = %zd and block_count= %zd\n ", block_size, block_count);
     if (argv[2][0] == '-' && argv[2][1] == 'r')
     {
-        fd = open(argv[1], O_RDONLY);
+        fd = open(argv[1], O_RDONLY,00700);
         if (fd)
         {
             // use clock for precison clock
