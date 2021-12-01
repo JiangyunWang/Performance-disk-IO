@@ -42,8 +42,8 @@ int main(int argc, char *argv[])
         errorMessage("Invalid block amount");
 
     ssize_t result;
-    float amount = block_size * block_count;
-    int *buf = malloc(amount * sizeof(int));
+    int amount = 0;
+    int *buf = malloc(block_size * block_count * sizeof(int));
 
     int fd;
     // printf("block_size = %zd and block_count= %zd\n ", block_size, block_count);
@@ -55,7 +55,10 @@ int main(int argc, char *argv[])
             // use clock for precison clock
             clock_t begin = clock();
             printf("Start clock = %s", ctime(&begin));
-            result = read(fd, buf, amount);
+            while (result = read(fd, buf, block_size * block_count) > 0)
+            {
+                amount += result;
+            }
             // printf("result: %zu\n", result);
 
             clock_t finish = clock();
