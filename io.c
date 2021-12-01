@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     if (block_size <= 0 || block_count <= 0)
         errorMessage("Invalid block amount");
 
-    ssize_t result;
+    int result;
     int amount = 0;
     int *buf = malloc(block_size * block_count * sizeof(int));
 
@@ -49,17 +49,17 @@ int main(int argc, char *argv[])
     // printf("block_size = %zd and block_count= %zd\n ", block_size, block_count);
     if (argv[2][0] == '-' && argv[2][1] == 'r')
     {
-        fd = open(argv[1], O_RDONLY,00700);
+        fd = open(argv[1], O_RDONLY, 00700);
         if (fd)
         {
             // use clock for precison clock
             clock_t begin = clock();
             printf("Start clock = %s", ctime(&begin));
-            while (result = read(fd, buf, block_size * block_count) > 0)
+            while ((result = read(fd, buf, block_size * block_count)) > 0)
             {
                 amount += result;
             }
-            // printf("result: %zu\n", result);
+            printf("amount: %d\n", amount);
 
             clock_t finish = clock();
             double time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     }
     else if (argv[2][0] == '-' && argv[2][1] == 'w')
     {
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < block_size * block_count; i++)
         {
             buf[i] = 'a';
         }
@@ -89,8 +89,13 @@ int main(int argc, char *argv[])
             // use clock for precison clock
             clock_t begin = clock();
             printf("Start clock = %s", ctime(&begin));
-            result = write(fd, buf, amount);
-            // printf("result: %zu\n", result);
+            result = write(fd, buf, block_size * block_count);
+            amount += result;
+            // while ((result = write(fd, buf, block_size * block_count)) > 0)
+            // {
+            //     amount += result;
+            // }
+            printf("amount: %d\n", amount);
 
             clock_t finish = clock();
             double time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
