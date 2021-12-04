@@ -10,6 +10,16 @@
 #include <time.h>
 // #include "io.c"
 
+unsigned int xorbuf(int *buffer, int size)
+{
+    unsigned int result = 0;
+    for (int i = 0; i < size; i++)
+    {
+        result ^= buffer[i];
+    }
+    return result;
+}
+
 void writeFile(char *file, ssize_t block_size)
 {
     int fd = open(file, O_RDONLY, 00700);
