@@ -10,9 +10,9 @@
 #include <time.h>
 // #include "io.c"
 
-void writeFile(ssize_t block_size)
+void writeFile(char *file, ssize_t block_size)
 {
-    int fd = open("smallfile.txt", O_RDONLY, 00700);
+    int fd = open(file, O_RDONLY, 00700);
     if (fd)
     {
 
@@ -52,6 +52,6 @@ void writeFile(ssize_t block_size)
 int main(int argc, char *argv[])
 {
     int size = atoi(argv[1]);
-    writeFile(size);
+    writeFile(argv[2], size);
     return 0;
 }
