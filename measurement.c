@@ -12,7 +12,7 @@
 
 void writeFile(ssize_t block_size)
 {
-    int fd = open("test.txt", O_RDONLY, 00700);
+    int fd = open("smallfile.txt", O_RDONLY, 00700);
     if (fd)
     {
 
@@ -24,18 +24,11 @@ void writeFile(ssize_t block_size)
         printf("Start clock = %ld\n", begin);
         while ((result = read(fd, buf, block_size)) > 0)
         {
-            // result = write(fd, buf, block_size);
             amount += result;
             realloc(buf, block_size * sizeof(int));
-            // free(buf);
-            // int *buf = malloc(block_size * sizeof(int));
             cnt++;
         }
 
-        // while ((result = write(fd, buf, block_size * block_count)) > 0)
-        // {
-        //     amount += result;
-        // }
         printf("amount: %d\n", amount);
 
         clock_t finish = clock();
@@ -59,7 +52,6 @@ void writeFile(ssize_t block_size)
 int main(int argc, char *argv[])
 {
     int size = atoi(argv[1]);
-    // printf("size: %d", size);
     writeFile(size);
     return 0;
 }

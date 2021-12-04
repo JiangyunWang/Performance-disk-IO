@@ -35,7 +35,7 @@ void readFile(int fd, int *buf, int block_size, int block_count, int amount)
     // int amount = 0;
     // use clock for precison clock
     clock_t begin = clock();
-    printf("Start clock = %s", ctime(&begin));
+    printf("Start clock = %ld\n", begin);
     int cnt = 0;
     while (cnt < block_count)
     {
@@ -49,7 +49,7 @@ void readFile(int fd, int *buf, int block_size, int block_count, int amount)
 
     clock_t finish = clock();
     time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
-    printf("End clock = %s", ctime(&finish));
+    printf("End clock = %ld\n", finish);
     printf("B/s: %f\n", amount / time_spent);
     printf("xorbuf: %08x\n", xorbuf(buf, amount));
     amount /= 1000000;
@@ -64,7 +64,7 @@ void writeFile(int fd, int *buf, int block_size, int block_count, int amount)
     // use clock for precison clock
     clock_t begin = clock();
     int cnt = 0;
-    printf("Start clock = %s", ctime(&begin));
+    printf("Start clock = %ld\n", begin);
     while (cnt < block_count)
     {
         result = write(fd, buf, block_size);
@@ -72,15 +72,11 @@ void writeFile(int fd, int *buf, int block_size, int block_count, int amount)
         cnt++;
     }
 
-    // while ((result = write(fd, buf, block_size * block_count)) > 0)
-    // {
-    //     amount += result;
-    // }
     printf("amount: %d\n", amount);
 
     clock_t finish = clock();
     time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
-    printf("End clock = %s", ctime(&finish));
+    printf("End clock = %ld\n", finish);
     printf("B/s: %f\n", amount / time_spent);
     amount /= 1000000;
 
@@ -113,25 +109,6 @@ int main(int argc, char *argv[])
         if (fd)
         {
             readFile(fd, buf, block_count, block_size, 0);
-            // // use clock for precison clock
-            // clock_t begin = clock();
-            // printf("Start clock = %s", ctime(&begin));
-            // while ((result = read(fd, buf, block_size * block_count)) > 0)
-            // {
-            //     amount += result;
-            // }
-            // printf("amount: %d\n", amount);
-
-            // clock_t finish = clock();
-            // time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
-            // printf("End clock = %s", ctime(&finish));
-            // printf("B/s: %f\n", amount / time_spent);
-            // printf("xorbuf: %08x\n", xorbuf(buf, amount));
-            // amount /= 1000000;
-
-            // printf("Mib/s: %f\n", amount / time_spent);
-            // free(buf);
-            // close(fd);
         }
         else
         {
