@@ -37,6 +37,7 @@ void writeFile(char *file, ssize_t block_size)
         printf("The file size is: %d\n", amount);
         printf("End clock = %ld\n", finish);
         printf("B/s: %f\n", amount / time_spent);
+        printf("xorbuf: %08x\n", xorbuf(buf, amount));
         amount /= 1000000;
 
         printf("Mib/s: %f\n", amount / time_spent);
