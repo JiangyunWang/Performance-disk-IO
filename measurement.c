@@ -1,3 +1,4 @@
+#define _FILE_OFFSET_BITS 64
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -26,9 +27,9 @@ void writeFile(char *file, ssize_t block_size)
     if (fd)
     {
 
-        int amount = 0;
+        double amount = 0;
         clock_t begin = clock();
-        int result = 0;
+        double result = 0;
         int cnt = 0;
         int *buf = malloc(block_size * sizeof(int));
         printf("Start clock = %ld\n", begin);
@@ -39,16 +40,16 @@ void writeFile(char *file, ssize_t block_size)
             cnt++;
         }
 
-        printf("amount: %d\n", amount);
+        // printf("amount: %d\n", amount);
 
         clock_t finish = clock();
         double time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
         printf("time spend: %f\n", time_spent);
-        printf("The file size is: %d\n", amount);
+        printf("The file size is: %f\n", amount);
         printf("End clock = %ld\n", finish);
         printf("B/s: %f\n", amount / time_spent);
         printf("xorbuf: %08x\n", xorbuf(buf, amount));
-        amount /= 1000000;
+        amount /= 1048576;
 
         printf("Mib/s: %f\n", amount / time_spent);
         free(buf);

@@ -30,7 +30,7 @@ unsigned int xorbuf(int *buffer, int size)
     return result;
 }
 
-void readFile(int fd, int *buf, int block_size, int block_count, int amount)
+void readFile(int fd, int *buf, int block_size, int block_count, double amount)
 {
     // int amount = 0;
     // use clock for precison clock
@@ -52,14 +52,14 @@ void readFile(int fd, int *buf, int block_size, int block_count, int amount)
     printf("End clock = %ld\n", finish);
     printf("B/s: %f\n", amount / time_spent);
     printf("xorbuf: %08x\n", xorbuf(buf, amount));
-    amount /= 1000000;
-
+    amount /= 1048576;
+    printf("Mib: %f\n", amount);
     printf("Mib/s: %f\n", amount / time_spent);
     free(buf);
     close(fd);
 }
 
-void writeFile(int fd, int *buf, int block_size, int block_count, int amount)
+void writeFile(int fd, int *buf, int block_size, int block_count, double amount)
 {
     // use clock for precison clock
     clock_t begin = clock();
