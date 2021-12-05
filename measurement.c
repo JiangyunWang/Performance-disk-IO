@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
-// #include "io.c"
+
 unsigned int xorResult = 0;
 unsigned int xorbuf(int *buffer, int size)
 {
@@ -37,8 +37,6 @@ void writeFile(char *file, ssize_t block_size)
             amount += result;
             xorbuf(buf, block_size);
         }
-
-        // printf("amount: %d\n", amount);
 
         clock_t finish = clock();
         double time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
