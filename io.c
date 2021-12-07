@@ -20,38 +20,38 @@ void errorMessage(char *s)
     exit(1);
 }
 
+unsigned int xorResult = 0;
 unsigned int xorbuf(int *buffer, int size)
 {
-    unsigned int result = 0;
+
     for (int i = 0; i < size; i++)
     {
-        result ^= buffer[i];
+        xorResult ^= buffer[i];
     }
-    return result;
+    return xorResult;
 }
 
 void readFile(int fd, int *buf, int block_size, int block_count, double amount)
 {
-    // int amount = 0;
-    // use clock for precison clock
     clock_t begin = clock();
     printf("Start clock = %ld\n", begin);
     int cnt = 0;
     while (cnt < block_count)
     {
         result = read(fd, buf, block_size);
+        xorbuf(buf, block_size);
         amount += result;
         cnt++;
         if (result <= 0)
             break;
     }
-    printf("amount: %d\n", amount);
+    printf("amount: %f\n", amount);
 
     clock_t finish = clock();
     time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
     printf("End clock = %ld\n", finish);
     printf("B/s: %f\n", amount / time_spent);
-    printf("xorbuf: %08x\n", xorbuf(buf, amount));
+    printf("xorbuf: %08x\n", xorResult);
     amount /= 1048576;
     printf("Mib: %f\n", amount);
     printf("Mib/s: %f\n", amount / time_spent);
@@ -59,27 +59,27 @@ void readFile(int fd, int *buf, int block_size, int block_count, double amount)
     close(fd);
 }
 
-void writeFile(int fd, int *buf, int block_size, int block_count, double amount)
+void writeFile(int fd, int *buf, int block_size, int block_count)
 {
-    // use clock for precison clock
+
     clock_t begin = clock();
-    int cnt = 0;
     printf("Start clock = %ld\n", begin);
+    int cnt = 0;
     while (cnt < block_count)
     {
         result = write(fd, buf, block_size);
-        amount += result;
         cnt++;
+        if (result <= 0)
+            break;
     }
-
-    printf("amount: %d\n", amount);
-
+    double amount = block_size * block_count;
     clock_t finish = clock();
     time_spent = (double)(finish - begin) / CLOCKS_PER_SEC;
     printf("End clock = %ld\n", finish);
     printf("B/s: %f\n", amount / time_spent);
-    amount /= 1000000;
-
+    // printf("xorbuf: %08x\n", xorbuf(buf, amount));
+    amount /= 1048576;
+    printf("Mib: %f\n", amount);
     printf("Mib/s: %f\n", amount / time_spent);
     free(buf);
     close(fd);
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
         if (fd)
         {
 
-            writeFile(fd, buf, block_count, block_size, 0);
+            writeFile(fd, buf, block_count, block_size);
         }
         else
         {
